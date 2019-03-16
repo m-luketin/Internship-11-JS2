@@ -34,7 +34,8 @@ for(let i = 0; i < shopItems.length; i++)
   </div>`;
 }
 
-//hover and click events for favourites
+//hover and click events for favorites
+let favorites = 0;
 let items = document.querySelectorAll(".offers__item");
 items.forEach((element) => {
   element.addEventListener("mouseover", function() {
@@ -53,11 +54,40 @@ items.forEach((element) => {
   });
 });
 
+let favoriteElement = document.createElement("span");
+favoriteElement.innerHTML = `Favorites: ${favorites}`;
+let main = document.querySelector("main");
+
 let buttons = document.querySelectorAll(".item__heart-full");
 buttons.forEach((element) => {
   element.clicked = false;
   element.addEventListener("click", function() {
-      element.clicked ? element.clicked = false : element.clicked = true; 
+      if(element.clicked) {
+        element.clicked = false; 
+        favorites--;
+      }
+      else {
+        element.clicked = true;
+        favorites++;
+      } 
+
+      if(favorites){
+        favoriteElement.innerHTML = `Favorites: ${favorites}`;
+        main.appendChild(favoriteElement);
+      }
+      else
+        main.removeChild(favoriteElement);
   });
 });
 
+//popup item window
+let offerItems = document.querySelectorAll(".item__img");
+offerItems.forEach((element) => {
+  element.addEventListener("click", function() {
+    let win = window.open(); 
+    win.document.write(`<link rel="stylesheet" href="./assets/styles/main.css" />
+    <body><main>
+    <div class="main__offers">${element.parentElement.innerHTML}</div>
+    </main></body>`);
+  });
+});
